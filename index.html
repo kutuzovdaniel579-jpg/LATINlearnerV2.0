@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
-  <title>Shortcut Receiver</title>
+  <meta charset="UTF-8">
+  <title>Latijn Woordtrainer</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    h2 { margin-bottom: 10px; }
+    select, button { padding: 10px; margin: 10px 0; font-size: 16px; }
+    #output { font-size: 22px; margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <h1>Server draait</h1>
-  <p>Deze endpoint ontvangt POST van Shortcuts.</p>
+
+<h2>Latijn Woordtrainer</h2>
+
+<select id="mode">
+  <option value="translation">Vertaling → Latijn</option>
+  <option value="genitive">Genitief → Latijn</option>
+  <option value="latin">Latijn → Vertaling</option>
+</select>
+
+<br>
+<button onclick="generate()">Geef een woord</button>
+
+<div id="output"></div>
+
+<script>
+// -------------------------
+// Woordenlijst uit bijlage
+// -------------------------
+const words = [
+  { latin: "cibus", genitive: "cibī", translations: ["voedsel"] },
+  { latin: "glōria", genitive: "glōriae", translations: ["roem"] },
+  { latin: "pugna", genitive: "pugnae", translations: ["gevecht"] },
+  { latin: "victōria", genitive: "victōriae", translations: ["overwinning"] },
+  { latin: "beneficium", genitive: "beneficiī", translations: ["weldaad"] },
+  { latin: "praemium", genitive: "praemiī", translations: ["beloning"] },
+  { latin: "maximus", genitive: null, translations: ["zeer groot", "grootste"] },
+  { latin: "laudāre", genitive: null, translations: ["prijzen"] },
+  { latin: "nūntiāre", genitive: null, translations: ["melden"] },
+  { latin: "optāre", genitive: null, translations: ["wensen"] },
+  { latin: "pārēre", genitive: null, translations: ["gehoorzamen"] },
+  { latin: "praebēre", genitive: null, translations: ["aanbieden"] },
+  { latin: "quis?", genitive: null, translations: ["wie?"] },
+  { latin: "quid?", genitive: null, translations: ["wat?"] },
+  { latin: "puella", genitive: "puellae", translations: ["meisje"] },
+  { latin: "nōtus", genitive: null, translations: ["bekend"] },
+  { latin: "vērus", genitive: null, translations: ["waar", "echt"] },
+  { latin: "temptāre", genitive: null, translations: ["proberen", "op de proef stellen"] },
+  { latin: "ārdēre", genitive: null, translations: ["branden"] },
+  { latin: "iacēre", genitive: null, translations: ["liggen"] },
+  { latin: "placēre", genitive: null, translations: ["bevallen", "aanstaan"] },
+  { latin: "citō", genitive: null, translations: ["snel"] },
+  { latin: "quō?", genitive: null, translations: ["waarheen?"] },
+  { latin: "ergō", genitive: null, translations: ["dus"] }
+];
+
+// -------------------------
+// Generator functie
+// -------------------------
+function generate() {
+  const mode = document.getElementById("mode").value;
+  const output = document.getElementById("output");
+
+  const w = words[Math.floor(Math.random() * words.length)];
+  const t = w.translations[Math.floor(Math.random() * w.translations.length)];
+
+  let result = "";
+
+  if (mode === "translation") {
+    result = `${t} → <b>${w.latin}</b>`;
+  } else if (mode === "genitive") {
+    result = `${w.genitive ?? "(geen genitief)"} → <b>${w.latin}</b>`;
+  } else if (mode === "latin") {
+    result = `${w.latin} → <b>${t}</b>`;
+  }
+
+  output.innerHTML = result;
+}
+</script>
+
 </body>
 </html>
